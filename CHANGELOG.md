@@ -1,3 +1,3 @@
-YYYY-MM-DD Release 0.1.0
-- something you did
-- something else you did
+#### 2015-01-08 - Remi Ferrand <puppet@cc.in2p3.fr> - 1.0.0
+
+* Initial release

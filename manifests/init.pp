@@ -1,27 +1,76 @@
 #
 # Copyright (c) IN2P3 Computing Centre, IN2P3, CNRS
 #
-# Contributor(s) : ccin2p3
+# Contributor(s) : Remi Ferrand <remi.ferrand_at_cc(dot)in2p3(dot)fr>
 #
 
-# == Class: etc_services
+# == Define: etc_services
 #
-# Full description of class etc_services here.
+# Manage a /etc/services entry uniquely identified by its name and protocol.
 #
 # === Parameters
 #
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
+# [*port*]
+#   /etc/services entry port. Required.
+# [*comment]
+#   /etc/services entry comment. Defaults to ''.
+# [*aliases*]
+#   /etc/services entry aliases specified as an array. Defaults to [].
+# [*ensure*]
+#   Should /etc/services entry be present or absent. Defaults to present.
 #
-class etc_services (
-  $package_name = $etc_services::params::package_name,
-  $service_name = $etc_services::params::service_name,
-) inherits etc_services::params {
+define etc_services (
+  $port,
+  $comment = '',
+  $aliases = [],
+  $ensure = 'present'
+)
+{
+  validate_re($name, '^\w+/(tcp|udp)$')
+  validate_re($ensure, '^(absent|present)$')
+  validate_re($port, '^\d+$')
+  validate_array($aliases)
+  validate_string($comment)
 
-  # validate parameters here
+  $primary_keys = split($name, '/')
+  $service_name = $primary_keys[0]
+  $protocol = $primary_keys[1]
 
-  class { 'etc_services::install': } ->
-  class { 'etc_services::config': } ~>
-  class { 'etc_services::service': } ->
-  Class['etc_services']
+  if ($ensure == 'present') {
+    $augeas_alias_operations = prefix($aliases, 'set $node/alias[last()+1] ')
+
+    $augeas_pre_alias_operations = [
+      "defnode node service-name[.='${service_name}'][protocol = '${protocol}'] ${service_name}",
+      "set \$node/port ${port}",
+      "set \$node/protocol ${protocol}",
+      'remove $node/alias',
+      'remove $node/#comment'
+    ]
+
+    if empty($comment) {
+      $augeas_post_alias_operations = []
+    } else {
+      $augeas_post_alias_operations = [
+        "set \$node/#comment '${comment}'"
+      ]
+    }
+
+    $augeas_operations = flatten([
+      $augeas_pre_alias_operations,
+      $augeas_alias_operations,
+      $augeas_post_alias_operations
+    ])
+  }
+  else {
+    $augeas_operations = [
+      "remove service-name[.='${service_name}'][protocol = '${protocol}'] ${service_name}"
+    ]
+  }
+
+  augeas { "${service_name}_${protocol}":
+    context => '/files/etc/services',
+    changes => $augeas_operations
+  }
 }
+
+# vim: tabstop=2 shiftwidth=2 softtabstop=2
