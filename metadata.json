@@ -1,18 +1,35 @@
 {
   "name": "ccin2p3-etc_services",
-  "version": "0.1.0",
-  "source": "",
-  "author": "ccin2p3",
-  "license": "Apache 2.0",
-  "summary": "",
-  "description": "",
-  "project_page": "",
+  "version": "1.0.0",
+  "source": "https://github.com/ccin2p3/puppet-etc_services",
+  "author": "IN2P3 Computing Centre",
+  "license": "CeCILL B",
+  "summary": "CC-IN2P3 module for managing /etc/services entries",
+  "description": "Puppet module to easily manage /etc/services entries",
+  "project_page": "https://github.com/ccin2p3/puppet-etc_services",
+  "issues_url": "https://github.com/ccin2p3/puppet-etc_services/issues",
+  "tags": ["/etc/services", "services", "etc_services", "etc", "port", "ports"],
   "dependencies": [
-
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": "4.x"
+    }
   ],
-  "types": [
-
-  ],
-  "checksums": {
-  }
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat"
+    },
+    {
+      "operatingsystem": "Scientific"
+    },
+    {
+      "operatingsystem": "CentOS"
+    },
+    {
+      "operatingsystem": "Debian"
+    },
+    {
+      "operatingsystem": "Ubuntu"
+    }
+  ]
 }

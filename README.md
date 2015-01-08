@@ -5,7 +5,6 @@
 3. [Setup - The basics of getting started with etc_services](#setup)
     * [What etc_services affects](#what-etc_services-affects)
     * [Setup requirements](#setup-requirements)
-    * [Beginning with etc_services](#beginning-with-etc_services)
 4. [Usage - Configuration options and additional functionality](#usage)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
@@ -13,48 +12,53 @@
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves. This is your 30 second elevator pitch for your module. Consider including OS/Puppet version it works with.       
+Manage a single `/etc/services` entry.
 
 ## Module Description
 
-If applicable, this section should have a brief description of the technology the module integrates with and what that integration enables. This section should answer the questions: "What does this module *do*?" and "Why would I use it?"
-
-If your module has a range of functionality (installation, configuration, management, etc.) this is the time to mention it.
+Manage a single `/etc/services` entry.
 
 ## Setup
 
 ### What etc_services affects
 
-* A list of files, packages, services, or operations that the module will alter, impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form. 
+* `/etc/services`
 
-### Setup Requirements **OPTIONAL**
+### Setup Requirements
 
-If your module requires anything extra before setting up (pluginsync enabled, etc.), mention it here. 
-
-### Beginning with etc_services
-
-The very basic steps needed for a user to get the module up and running. 
-
-If your most recent release breaks compatibility or requires particular steps for upgrading, you may wish to include an additional section here: Upgrading (For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+* [puppetlabs-stdlib](https://github.com/puppetlabs/puppetlabs-stdlib.git)
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing the fancy stuff with your module here. 
+### Classes and Defined Types
+
+#### Defined Type: `etc_services`
+
+Manage `/etc/services` entries.
+
+Separator `/` is used between _service_name_ and _protocol_ and is *mandatory*.
+
+Example:
+
+```puppet
+::etc_services { 'kerberos/udp':
+  port    => '88',
+  aliases => [ 'kerberos5', 'krb5', 'kerberos-sec' ],
+  comment => 'Kerberos v5'
+}
+```
 
 ## Reference
 
-Here, list the classes, types, providers, facts, etc contained in your module. This section should include all of the under-the-hood workings of your module so people know what the module is touching on their system but don't need to mess with things. (We are working on automating this section!)
+### Defined Types
+
+* [etc_services](#defined-type-etc_services-type-etc_services): Manage `/etc/services` entry.
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+This module could be used on any operating systems that has support for augeas and uses `/etc/services` file.
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
-
-## Release Notes/Contributors/Etc **Optional**
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You may also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 
+If you want to contribute or adjust some of the settings / behavior, either:
+* create a new _Pull Request_.
