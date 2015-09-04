@@ -26,7 +26,7 @@ define etc_services (
   $ensure = 'present'
 )
 {
-  validate_re($name, '^\w+/(tcp|udp)$')
+  validate_re($name, '^[-\w]+/(tcp|udp)$')
   validate_re($ensure, '^(absent|present)$')
   validate_re($port, '^\d+$')
   validate_array($aliases)
