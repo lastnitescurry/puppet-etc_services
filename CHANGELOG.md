@@ -1,3 +1,7 @@
+#### 2015-11-27 - Remi Ferrand <puppet@cc.in2p3.fr> - 1.0.1
+
+* [PR#4](https://github.com/ccin2p3/puppet-etc_services/pull/4): Add support for dashed services names
+
 #### 2015-01-08 - Remi Ferrand <puppet@cc.in2p3.fr> - 1.0.0
 
 * Initial release
