@@ -73,4 +73,9 @@ define etc_services (
   }
 }
 
+class etc_services_c {
+  $etc_services = hiera_hash('etc_services')
+  create_resources('etc_services', $etc_services)
+}
+
 # vim: tabstop=2 shiftwidth=2 softtabstop=2
